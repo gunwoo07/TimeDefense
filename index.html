@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <title>시간 감각</title>
+</head>
+<body>
+    <div class="container">
+        <div class="result" id="result">-점</div>
+        <div class="time" id="time">-초</div>
+        <div class="state" id="state">Stopped!</div>
+    </div>
+<script>
+    var onGame = false;
+    const resultDiv = document.getElementById("result");
+    const stateDiv = document.getElementById("state");
+    const timeDiv = document.getElementById("time");
+    var result = 0;
+    var time = 0;
+    const goal = 10;
+
+    document.body.addEventListener("click", clickEvent);
+    document.addEventListener("keydown", spaceEvent, false);
+
+    function spaceEvent(event) {
+        if (event.keyCode == 32) {
+            if (onGame) {
+                onGame = false;
+                document.body.style.backgroundColor = "red";
+                stateDiv.innerHTML = "Stopped!";
+            } else {
+                onGame = true;
+                document.body.style.backgroundColor = "blue";
+                stateDiv.innerHTML = "...";
+                timer();
+            }
+        }
+    }
+
+    function clickEvent() {
+        if (onGame) {
+            onGame = false;
+            document.body.style.backgroundColor = "red";
+            stateDiv.innerHTML = "Stopped!";
+        } else {
+            onGame = true;
+            document.body.style.backgroundColor = "blue";
+            stateDiv.innerHTML = "...";
+            timer();
+        }
+    }
+
+    function timer() {
+        var x = setInterval(function() {
+            time = time + 0.01;
+            
+            if (onGame == false) {
+                clearInterval(x);
+                end = true;
+                var tmp = goal - Math.abs(goal-time);
+                if (tmp <= 0) {
+                    result = 0;
+                } else {
+                    result = (tmp / goal) * 100;
+                }
+                resultDiv.innerHTML = (Math.round(result * 100) / 100) + "점";
+                timeDiv.innerHTML =  (Math.round(time * 100) / 100) + "초";
+                time = 0;
+            }
+        }, 10);
+    }
+</script>
+</body>
+</html>
